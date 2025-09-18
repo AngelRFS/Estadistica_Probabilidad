@@ -1,0 +1,274 @@
+---
+title: "Análisis de Frecuencias"
+author: "Flores Salazar Angel Rodrigo"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: show
+    theme: bootstrap
+  word_document:
+    toc: true
+    toc_depth: 3
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Calculo de todos los ejercicios de la pag 63 a 87
+a excepcion de unos ejercicios reslizados a mano y presentados en clase
+```{r}
+
+## Función general para el análisis de todos los ejercicios
+analisis_frecuencias <- function(datos, titulo = "Ejercicio") {
+  tabla <- table(datos)
+  frecuencia <- as.numeric(tabla)
+  categorias <- names(tabla)
+  frec_acum <- cumsum(frecuencia)
+  porcentaje <- round(frecuencia / sum(frecuencia) * 100, 2)
+  porc_acum <- cumsum(porcentaje)
+  proporcion <- round(frecuencia / sum(frecuencia), 4)
+  prop_acum <- cumsum(proporcion)
+
+  tabla_final <- data.frame(
+    Categoria = categorias,
+    Frecuencia = frecuencia,
+    Frec_Acum = frec_acum,
+    Porcentaje = porcentaje,
+    Porc_Acum = porc_acum,
+    Proporcion = proporcion,
+    Prop_Acum = prop_acum
+  )
+
+  cat("\n==========================\n")
+  cat(titulo, "\n")
+  cat("==========================\n\n")
+  print(tabla_final)
+
+  # Cuartiles y boxplot para datos numéricos
+  if (is.numeric(datos)) {
+    cat("\n} Cuartiles:\n")
+    print(quantile(datos, probs = c(0.25, 0.5, 0.75)))
+    
+    # Gráfico boxplot
+    boxplot(datos,
+            main = paste("Boxplot -", titulo),
+            col = "lightblue",
+            horizontal = TRUE)
+  }
+
+  # Gráfica de Barras
+  barplot(frecuencia,las= 2,
+          names.arg = categorias,
+          col = rainbow(length(categorias)),
+          main = paste("Gráfica de Barras -", titulo),
+          ylab = "Frecuencia")
+
+  # Gráfica de Pastel
+  pie(frecuencia,
+      labels = paste(categorias, porcentaje, "%"),
+      col = rainbow(length(categorias)),
+      main = paste("Gráfica de Pastel -", titulo))
+}
+
+
+```
+# Variables de tipo: Nominal
+
+==========================================
+
+## PÁGINA 63 - Ejercicio: Sexo
+```{r}
+datos_63<- c("NA", "NA", "NA", "Femenino", "NA", "Femenino", "Femenino", "Femenino","NA", "Masculino", "Femenino", "Femenino", "Masculino", "Femenino", "NA","Masculino", "NA", "NA", "Masculino", "Masculino", "Masculino", "Masculino", "NA",
+"Femenino", "NA")
+analisis_frecuencias(datos_63, "Pág. 63 - Sexo")
+```
+==========================================
+
+## PÁGINA 65 - Ejercicio:Color de ojos
+```{r}
+datos_65<- c("Gris", "Azul", "Ambar", "Negro", "Avellana", "Café", "Avellana", "Azul","Verde", "Ambar", "Avellana", "Café", "Café", "Azul", "Verde", "Azul", "Avellana", "Verde",
+"Verde", "Verde", "Gris", "Negro", "Avellana", "Negro", "Gris","Negro", "Avellana", "Azul",
+"Ambar", "Verde")
+analisis_frecuencias(datos_65, "Pág. 65 - Color de ojos")
+```
+==========================================
+
+## PÁGINA 66 - Ejercicio: Marca de celular
+```{r}
+datos_66<- c("Apple", "Samsung", "LG", "Huawei", "OnePlus", "Sony", "Apple","Samsung", "Huawei", "Huawei", "Nokia", "OnePlus", "Motorola", "Xiaomi","Samsung", "Apple", "Apple", "Motorola", "Samsung", "Samsung", "Huawei","Motorola", "Nokia", "OnePlus", "Huawei", "Huawei", "Apple", "LG", "Apple", "Xiaomi",
+"LG", "OnePlus", "OnePlus", "LG", "Sony", "Samsung", "Apple", "Xiaomi", "Oppo","Motorola", "LG", "Samsung", "Motorola", "Samsung", "Nokia", "OnePlus", "OnePlus","Oppo", "Sony", "Nokia", "Huawei", "LG", "Sony", "Xiaomi", "LG", "Huawei", "LG", "Nokia",
+"Xiaomi", "Sony", "OnePlus", "LG", "Xiaomi", "OnePlus", "Oppo", "Nokia", "Huawei","Xiaomi", "Oppo", "Oppo")
+
+analisis_frecuencias(datos_66, "Pág. 66 - Marca de celular")
+```
+==========================================
+
+## PÁGINA 67 - Ejercicio: Estado civil
+
+```{r}
+datos_67 <- c("Viudo","Viudo","Union libre","Soltero","Viudo","Union libre",
+              "Divorciado","Casado","Union libre","Viudo","Viudo","Soltero",
+              "Divorciado","Divorciado","Divorciado","Union libre","Casado",
+              "Union libre","Casado","Soltero","Viudo","Casado","Casado",
+              "Divorciado","Union libre","Soltero","Divorciado","Divorciado",
+              "Casado","Union libre","Soltero","Viudo","Viudo","Soltero",
+              "Divorciado","Viudo","Viudo","Soltero","Union libre","Divorciado")
+analisis_frecuencias(datos_67, "Pág. 67 - Estado civil")
+
+```
+# Variables de tipo: Ordinales
+
+==========================================
+
+## PÁGINA 68 - Ejercicio: Nivel educativo
+
+```{r}
+datos_68 <- c("posdoctorado","preparatoria","preparatoria","doctorado","primaria","doctorado","preparatoria","secundaria","preparatoria","preparatoria","primaria","doctorado","secundaria","secundaria","secundaria","licenciatura","doctorado","primaria","maestria","posdoctorado","maestria","preparatoria","posdoctorado","doctorado","preparatoria","doctorado","maestria","primaria","licenciatura","secundaria","maestria","posdoctorado","doctorado","licenciatura","doctorado",
+"posdoctorado","maestria","primaria","secundaria","preparatoria")
+analisis_frecuencias(datos_68, "Pág. 68 - Nivel educativo")
+
+```
+==========================================
+
+## PÁGINA 69 - Ejercicio: Nivel de satisfacción
+
+```{r}
+datos_69 <- c("satisfecho","muy satisfecho","muy insatisfecho","neutral",
+              "muy satisfecho","muy insatisfecho","muy satisfecho","insatisfecho",
+              "muy insatisfecho","insatisfecho","muy satisfecho","insatisfecho",
+              "muy satisfecho","muy satisfecho","mas o menos insatisfecho",
+              "insatisfecho","satisfecho","muy satisfecho","neutral",
+              "mas o menos insatisfecho","muy insatisfecho","mas o menos satisfecho",
+              "insatisfecho","neutral","mas o menos satisfecho","satisfecho",
+              "mas o menos satisfecho","satisfecho","neutral","satisfecho","muy insatisfecho","muy insatisfecho","neutral","satisfecho","insatisfecho","mas o menos satisfecho","mas o menos insatisfecho","muy insatisfecho","neutral","neutral","satisfecho","neutral",
+"insatisfecho","mas o menos insatisfecho","mas o menos insatisfecho","insatisfecho","mas o menos satisfecho","satisfecho","neutral","insatisfecho","insatisfecho")
+analisis_frecuencias(datos_69, "Pág. 69 - Nivel de satisfacción")
+
+```
+==========================================
+## PÁGINA 70 - Ejercicio: Grado de dolor
+
+```{r}
+datos_70 <- c("severo","leve","leve","severo","leve","leve","leve","moderado",
+              "moderado","moderado","moderado","severo","severo","moderado",
+              "leve","severo","leve","severo","severo","severo","leve","moderado",
+              "severo","severo","leve","leve","leve","severo","severo","leve")
+analisis_frecuencias(datos_70, "Pág. 70 - Grado de dolor")
+
+```
+
+==========================================
+## PAGINA72 - Ejercicio: Rangos
+```{r}
+datos_72<- c("Principiante", "Principiante", "Aprendiz", "Intermedio", "Experto",
+"Intermedio", "Experto", "Aprendiz", "Principiante", "Avanzado", "Intermedio","Experto", "Experto", "Experto", "Avanzado", "Intermedio", "Intermedio","Principiante", "Principiante", "Principiante", "Principiante", "Principiante",
+"Intermedio", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Intermedio","Aprendiz", "Principiante", "Intermedio", "Avanzado", "Avanzado", "Intermedio","Avanzado", "Principiante", "Intermedio", "Avanzado", "Intermedio", "Avanzado")
+analisis_frecuencias(datos_72, "Pág. 72 - Rangos")
+```
+# Tipo de Variables: Cuantitativas Discretas
+
+=============
+
+## PÁGINA 73 - Ejercicio: Número de hijos en una familia
+
+```{r}
+datos_73 <- c(2,2,4,4,1,3,1,3,3,3,5,2,1,5,3,3,3,3,1,3,3,2,5,5,2,5,2,3,1,3)
+analisis_frecuencias(datos_73, "Pág. 73 - Número de hijos en una familia")
+```
+
+==========================================
+
+## PÁGINA 74 - Ejercicio: Número de estudiantes en un salon
+
+
+```{r}
+datos_74 <- c(35,37,13,6,40,42,11,24,24,33,8,34,21,23,34,24,45,39,38,35,9,39,38,45,7,35,22,28,38,6,5,45,36,18,37,45,13,31,23,43)
+analisis_frecuencias(datos_74, "Pág. 74 - Número de estudiantes")
+
+```
+==========================================
+
+## PÁGINA 76 - Ejercicio: Goles en un partido
+
+```{r}
+datos_76 <- c(2,1,0,0,1,1,0,0,3,3,1,0,1,1,1,0,1,1,3,2,1,2,1,0,1,1,2,1,2,1,1,2,1,1,0,1,0,1,0,0,1,1,1,2,0,0,1,0,1,2,2,0,0,1,1,0,1,0,1,0,
+              1,0,1,1,2,2,1,2,1,0,0,0,0,0,3,3,1)
+analisis_frecuencias(datos_76, "Pág. 76 - Número de goles")
+
+
+```
+==========================================
+
+## PÁGINA 77 - Ejercicio: Accidentes en una vialidad
+
+
+```{r}
+datos_77 <- c(22, 24, 35, 8, 12, 33, 17, 31, 24, 12, 6, 14, 26, 8, 41, 3, 15, 7, 3, 23, 10, 17, 3, 7, 1, 11, 19, 4, 33, 7, 10, 2, 2, 19, 1, 15, 7, 16, 13, 3, 26, 4, 16, 18, 27, 18, 17, 32, 25, 22, 34, 40, 47, 35, 19, 27, 12, 44, 37, 27, 40, 18, 28, 16, 31, 37, 32, 44, 29, 35, 25, 28, 27, 31, 33, 21, 41, 20, 39, 28, 22, 34, 27, 28, 37, 26, 29, 37, 38, 26, 38, 53, 39, 41, 35, 57, 27, 41, 41, 72, 53, 64, 67, 46, 44, 31, 47, 56, 56, 63, 47, 58, 44, 32, 70, 53, 59, 51, 70, 44, 51, 52, 46, 44, 46, 41, 54, 63, 46, 47, 37, 60, 34, 49, 63, 42, 48, 44, 65, 63, 45, 63, 42, 58, 43, 54, 90, 55, 57, 54, 55, 46, 46, 46, 55, 23, 39, 35, 44, 58, 68, 44, 11, 23, 24, 13, 47, 49)
+analisis_frecuencias(datos_77,"Pág. 77 - Número de accidentes")
+
+```
+
+# Cuantitativas continuas
+
+===================
+## PÁGINA 78 - Ejercicio: Estatura en metros
+```{r}
+datos_78 <- c(1.57, 1.97, 1.85, 1.78, 1.62, 1.67, 1.92, 1.96, 1.76, 1.94, 1.85, 1.71, 1.65, 1.98, 1.56, 1.84, 1.91, 1.61, 1.8, 1.58, 1.7, 1.62, 1.76, 1.84, 1.95, 1.67, 1.62, 1.65, 1.61, 1.56, 1.63, 1.96, 1.53, 1.75, 1.9, 1.92, 1.79, 1.62, 1.79, 1.57, 1.74, 1.55, 1.65, 1.84, 1.6, 1.7, 1.9, 1.61, 1.54, 1.89, 1.84, 1.76, 1.61, 1.59, 1.81, 1.52, 1.61, 1.91, 1.65, 1.51, 1.98, 1.54, 1.87, 1.92, 1.51, 1.93, 1.78, 1.67, 1.66, 1.82,1.56, 1.66, 1.79, 1.88, 1.78, 1.84, 1.69, 1.95, 1.99, 1.88, 1.51, 1.76, 1.9, 1.6, 1.69, 1.77, 1.87, 1.67, 1.66, 1.71, 1.64, 1.81, 1.52, 1.8, 1.71, 1.52, 2, 1.81, 1.92, 1.7)
+analisis_frecuencias(datos_78,"Pág. 78 - Estatura en metros")
+```
+===================
+## PÁGINA 79 - Ejercicio: peso corporal en kilogramos
+```{r}
+datos_79 <- c(100.5, 91.3, 60.4, 83.2, 49.6, 103.1, 60.3, 109.3, 83.5, 63.9, 106, 50, 47, 89.7, 108.5, 78.9, 82.7, 60.7, 98.7, 85.2, 48.7, 106.7, 63.9, 84.1, 69.5, 53.3, 108.9, 91.8, 108.6, 54.5, 95.1, 90.6, 115.9, 88.5, 67.7, 115.1, 108.3, 76.8, 81.4, 102.6, 63.9, 105.9, 106.7, 76.3, 113.7, 50.3, 105.8, 81.4, 67.9, 91.3, 68.9, 93.9, 113.7, 87.7, 92.8, 76.2, 104.7, 109.7, 72.6, 81.6, 112.2, 79.8, 60.7, 95.7, 100.1, 94, 60.5, 117.1, 45.5, 112.7, 51.7, 107.8, 86.6, 90.3, 105.9, 64.7, 48, 55.4, 52.9, 58.2, 117.1, 59.6, 69.9, 96.9, 97, 66.5, 67.4, 77.2, 73.7, 113)
+analisis_frecuencias(datos_79,"Pág. 79 - Peso corporal")
+```
+===================
+## PÁGINA 80 - Ejercicio: Niel de contaminacion en iztapalapa 
+en el mes de julio
+```{r}
+datos_80 <- c(0.7, 0.4, 0.4, 0.5, 0.3, 0.3, 0.7, 0.5, 0.2, 0.2, 0.5, 0.8, 0.3, 0.9, 0.5, 0.2,0.4, 0.4, 0.7, 0.6, 0.8, 0.3, 1, 0.7, 1.5, 0.1, 0.1, 0.9, 0.1, 0.3,0.9, 0.3,1.2, 1.2, 1.2, 0.6, 0.7, 0.4, 1.8, 0.2, 0.6, 0.7, 1.7, 0.4, 0.9, 0.2, 0.8, 1,
+0.7, 0.6, 0.7, 0.3, 0.5, 0.2, 1.2, 0.5, 0.8, 0.2, 0.4, 0.3, 0.4, 0.5, 0.5, 1.4,0.4)
+analisis_frecuencias(datos_80,"Pág. 80 - Nivel de contaminacion")
+```
+===================
+## PÁGINA 82 - Ejercicio: Tiempo de traslado en horas
+```{r}
+datos_82 <- c(1.5, 1.3, 1.1, 0.6, 0.9, 1.4, 0.8, 1.7, 1.7,
+ 1.6, 1.7, 1.3, 1.5, 0.5, 1.4, 0.6, 1.5, 1.9, 0.7, 1.9, 2, 1.6, 0.7, 1.6, 0.7,0.5, 0.6, 1.6, 1.4, 1.9, 1.9, 1, 1.7, 1.7, 1.8, 1.6, 1.4, 1.4, 0.7, 0.8, 1.5,0.8, 1.9, 1.2, 1.9, 1.8, 1.7, 1.5, 1.5, 0.7, 1.8, 1.3, 1.8, 0.6, 1.5, 1.4, 1.3,1.3, 0.8, 1.4, 0.6, 1.1, 1.1, 0.6, 1.7, 0.5, 2, 1.7, 0.7, 1, 0.6, 1.8, 1.1, 1.6,1, 1.1, 1.8, 0.8, 1.1, 1.7, 1.4, 1.4, 1.2, 1.5, 1.6, 1.6, 1.5, 0.5, 1.4, 1.1, 1,
+0.9, 0.6, 1.7, 1.6, 1.2, 0.6, 1.2, 1.2, 1.8)
+analisis_frecuencias(datos_82,"Pág. 82 - Tiempo de Traslado ")
+```
+
+#Tipo de variable: Binarias o dicotomicas
+===================
+  
+## PÁGINA 83 - Ejercicio: Licencia de conducir
+```{r}
+datos_83 <- c("No", "Si", "No", "Si", "Si", "No", "Si", "No", "No", "No", "Si", "Si", "No", "No", "Si", "No", "No", "Si", "No", "No", 
+"Si", "Si", "Si", "No", "No", "Si", "No", "Si", "No", "No", "No", "No", "Si", "Si", "No", "Si", "Si", "No", "Si", "Si", 
+"No", "Si", "No", "No", "Si", "No", "No", "No", "No", "Si", "Si", "Si", "No", "Si", "No", "No", "No", "No", "Si", "Si", 
+"No", "Si", "No", "Si", "No", "No", "No", "Si", "No", "Si", "No", "Si", "Si", "No", "No")
+analisis_frecuencias(datos_83,"Pág. 83 - Licencia de conducir")
+```
+===================
+## PÁGINA 84 - Ejercicio: Examen
+```{r}
+datos_84 <- c("Reprobado", "Aprobado", "Aprobado", "Aprobado", "Aprobado","Reprobado", "Aprobado", "Reprobado", "Reprobado", "Aprobado","Reprobado",
+"Reprobado","Reprobado", "Reprobado", "Aprobado", "Reprobado", "Reprobado","Aprobado", "Aprobado", "Reprobado", "Aprobado", "Aprobado","Aprobado","Aprobado", "Reprobado", "Aprobado", "Reprobado", "Aprobado","Reprobado",
+"Reprobado", "Aprobado", "Reprobado", "Aprobado", "Reprobado", "Aprobado","Reprobado", "Reprobado", "Aprobado", "Reprobado", "Reprobado", "Reprobado","Aprobado", "Aprobado", "Aprobado", "Aprobado", "Reprobado", "Reprobado",
+"Reprobado", "Aprobado", "Reprobado")
+analisis_frecuencias(datos_84,"Pág. 84 - Examen")
+```
+#tipo de variable: Politomica
+
+===================
+
+## PÁGINA 87 - Ejercicio: Ocupacion
+```{r}
+datos_87 <- c("Desempleado","Estudiante", "Empleado", "Empleado", "Estudiante","Empleado", "Empleado", "Empleado", "Jubilado", "Jubilado", "Jubilado", "Jubilado","Jubilado", "Estudiante", "Desempleado", "Desempleado", "Jubilado", "Empleado","Estudiante", "Estudiante", "Empleado", "Desempleado", "Estudiante","Desempleado", "Jubilado", "Empleado", "Jubilado", "Desempleado","Desempleado", "Desempleado")
+analisis_frecuencias(datos_87,"Pág. 87 - Ocupacion")
+```
