@@ -1,5 +1,5 @@
 ---
-title: "Tarean de Probabilidad"
+title: "Tarea de Probabilidad"
 author: "Flores Salazar Angel Rodrigo"
 date: " r format(Sys, time(), %d, %B, %Y)"
 output: 
